@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080607">
+<meta name="description" content="B19 Class of 2019 Get Together registration app">
+<title>B19 — Get Together</title>
+<style>
+:root{
+  --bg:#080607; --panel:#120d0f; --panel2:#171012; --burg:#7d1830;
+  --burg2:#a62443; --gold:#d8b56a; --gold2:#f0d58d; --text:#f6f0e8;
+  --muted:#a99da0; --line:#342127; --danger:#e45d75;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;max-width:480px;margin:auto;position:relative;overflow:hidden;
+background:radial-gradient(circle at 85% 10%,#4d0d1d55,transparent 28%),var(--bg)}
+.bg-orb{position:fixed;inset:auto -20% 45% auto;width:320px;height:320px;border-radius:50%;
+border:1px solid #a6244338;box-shadow:0 0 90px #7d183044;pointer-events:none}
+.screen{display:none;min-height:100vh;padding:24px 20px 92px;position:relative}
+.screen.active{display:block}
+h1,h2,h3,.serif{font-family:Georgia,"Times New Roman",serif;font-weight:400}
+h1{font-size:46px;line-height:.95;margin:0 0 18px;color:var(--gold2)}
+h2{font-size:30px;margin:0 0 10px;color:var(--gold2)}
+h3{font-size:19px;margin:0 0 8px}
+p{line-height:1.55;color:#d0c7c9}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:34px}
+.logo{font:34px Georgia,serif;color:var(--gold2)}
+.logo span{color:var(--burg2)}
+.eyebrow{text-transform:uppercase;letter-spacing:3px;font-size:11px;color:var(--gold)}
+.hero{min-height:calc(100vh - 100px);display:flex;flex-direction:column;justify-content:center;
+position:relative}
+.hero:before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+right:-250px;top:5%;border:1px solid #b22b4b55;box-shadow:0 0 100px #8e183433}
+.hero-copy{position:relative;z-index:1}
+.tagline{font:22px Georgia,serif;line-height:1.45;color:#eee2d6;max-width:280px}
+.divider{width:42px;height:2px;background:var(--gold);margin:26px 0}
+.btn{width:100%;border:0;border-radius:18px;padding:16px 20px;font-weight:700;
+background:linear-gradient(135deg,var(--burg2),#7e1730);color:#fff;box-shadow:0 12px 30px #7d183033}
+.btn.gold{background:linear-gradient(135deg,#e5c36f,#a77c2d);color:#120b08}
+.btn.ghost{background:transparent;border:1px solid var(--line);box-shadow:none;color:var(--gold2)}
+.btn.small{width:auto;padding:10px 14px;border-radius:12px;font-size:13px}
+.card{background:linear-gradient(145deg,#1b1013cc,#0d090add);border:1px solid var(--line);
+border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 18px 50px #0005}
+.event-card{position:relative;overflow:hidden}
+.event-card:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+right:-80px;top:-50px;border:1px solid #b22b4b55;box-shadow:0 0 60px #8e183433}
+.meta{display:grid;gap:12px;margin-top:16px}
+.meta-row{display:flex;gap:12px;align-items:flex-start;color:#ddd}
+.icon{width:26px;color:var(--gold);font-size:18px}
+.stat{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:13px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.tile{padding:15px 8px;text-align:center;background:#140d10;border:1px solid var(--line);border-radius:15px}
+.tile b{display:block;color:var(--gold2);font-size:13px;margin-top:8px}
+.field{margin:15px 0}
+label{display:block;font-size:12px;color:#c7bfc1;margin-bottom:7px}
+input,select{width:100%;padding:14px 13px;border-radius:13px;border:1px solid #3a292e;
+background:#0d090a;color:#fff;outline:none}
+input:focus,select:focus{border-color:var(--burg2);box-shadow:0 0 0 3px #a6244322}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice label{margin:0;padding:13px;border:1px solid var(--line);border-radius:13px;text-align:center;
+color:#d9d0d2;background:#0d090a;cursor:pointer}
+.choice input{display:none}
+.choice label:has(input:checked){border-color:var(--burg2);background:#7d183025;color:#fff}
+.note{font-size:12px;color:var(--muted)}
+.success{text-align:center;padding-top:15vh}
+.check{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;margin:0 auto 24px;
+background:#7d183033;border:1px solid var(--burg2);color:var(--gold2);font-size:32px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);
+display:flex;background:#0d090bf5;border-top:1px solid var(--line);backdrop-filter:blur(16px);z-index:10}
+.nav{flex:1;padding:13px 5px 11px;text-align:center;color:#81767a;background:none;border:0;font-size:11px}
+.nav b{display:block;font-size:18px;margin-bottom:4px}
+.nav.active{color:var(--gold2)}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:#f2e3c2;
+color:#1b0d0f;padding:12px 16px;border-radius:12px;font-size:13px;display:none;z-index:20}
+.list-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 0;
+border-bottom:1px solid var(--line)}
+.badge{padding:5px 8px;border-radius:999px;font-size:11px;background:#7d183033;color:var(--gold2)}
+@media(min-width:481px){body{background:#050405}.app{box-shadow:0 0 80px #000}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="bg-orb"></div>
+
+<section id="welcome" class="screen active">
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">Class of 2019</div>
+      <h1>B<span>19</span></h1>
+      <div class="divider"></div>
+      <div class="tagline">Good people.<br>Great vibes.<br>Same place.</div>
+      <p>One night to reconnect, laugh, remember and make new memories.</p>
+      <button class="btn" onclick="show('home')">Get Started&nbsp; →</button>
+      <p class="note" style="text-align:center;margin-top:15px">B19 Get Together • 26 December 2026</p>
+    </div>
+  </div>
+</section>
+
+<section id="home" class="screen">
+  <div class="top"><div class="logo">B<span>19</span></div><button class="btn ghost small" onclick="show('register')">RSVP</button></div>
+  <div class="eyebrow">Upcoming event</div>
+  <h2>Welcome back.</h2>
+  <p>It’s time to bring the class of 2019 together again.</p>
+
+  <div class="card event-card">
+    <div class="eyebrow">B19 Get Together</div>
+    <h2 style="font-size:25px;margin-top:8px">26 December 2026</h2>
+    <div class="meta">
+      <div class="meta-row"><span class="icon">◷</span><span>10:00 AM onwards • Zegans Hotel — Lira</span></div>
+      <div class="meta-row"><span class="icon">♧</span><span>Registration is open for classmates and invited guests.</span></div>
+    </div>
+    <div class="stat" style="margin-top:18px"><span id="countText">Registrations are stored online</span><span>● B19</span></div>
+    <button class="btn gold" style="margin-top:16px" onclick="show('register')">Reserve my spot →</button>
+  </div>
+
+  <h3 style="margin-top:28px">What to expect</h3>
+  <div class="grid3">
+    <div class="tile">♧<b>Reconnect</b></div>
+    <div class="tile">♫<b>Good Music</b></div>
+    <div class="tile">✦<b>Good Vibes</b></div>
+  </div>
+</section>
+
+<section id="event" class="screen">
+  <div class="top"><button class="btn ghost small" onclick="show('home')">← Back</button><div class="eyebrow">Event details</div></div>
+  <h2>Good People.<br>Great Vibes.</h2>
+  <p>B19 is a reunion for the class of 2019—a chance to catch up and celebrate how far everyone has come.</p>
+  <div class="card">
+    <div class="meta">
+      <div class="meta-row"><span class="icon">▣</span><span><b>Saturday, 26 December 2026</b><br><span class="note">Annual class get-together</span></span></div>
+      <div class="meta-row"><span class="icon">⌖</span><span><b>Venue</b><br><span class="note">Zegans Hotel — Lira</span></span></div>
+      <div class="meta-row"><span class="icon">◷</span><span><b>Time</b><br><span class="note">10:00 AM onwards</span></span></div>
+    </div>
+  </div>
+  <h3>Why register?</h3>
+  <p>Registration helps the organizers plan attendance, seating, food and communication before the big day.</p>
+  <button class="btn gold" onclick="show('register')">Register for B19 →</button>
+</section>
+
+<section id="register" class="screen">
+  <div class="top"><button class="btn ghost small" onclick="show('home')">← Back</button><div class="eyebrow">RSVP</div></div>
+  <h2>Save your spot.</h2>
+  <p>Register now for the B19 Class of 2019 Get Together.</p>
+  <form id="form">
+    <div class="field"><label>FULL NAME *</label><input id="name" required placeholder="Your full name"></div>
+    <div class="field"><label>PHONE NUMBER *</label><input id="phone" required type="tel" placeholder="+256 ..."></div>
+    <div class="field"><label>EMAIL ADDRESS</label><input id="email" type="email" placeholder="you@example.com"></div>
+    <div class="field">
+      <label>WILL YOU BE ATTENDING? *</label>
+      <div class="choice">
+        <label><input type="radio" name="attend" value="Yes" checked>Yes</label>
+        <label><input type="radio" name="attend" value="No">No</label>
+      </div>
+    </div>
+    <div class="field"><label>NUMBER OF GUESTS (INCLUDING YOU)</label><select id="guests"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+    <div class="field"><label>NOTE (OPTIONAL)</label><input id="note" placeholder="Anything organizers should know?"></div>
+    <button class="btn gold" type="submit">Submit RSVP →</button>
+    <p class="note">Your RSVP is sent securely to the B19 online database.</p>
+  </form>
+</section>
+
+<section id="success" class="screen">
+  <div class="success">
+    <div class="check">✓</div>
+    <div class="eyebrow">Registration received</div>
+    <h2>You’re on the list.</h2>
+    <p id="successText">Your B19 RSVP has been saved.</p>
+    <button class="btn gold" onclick="show('home')">Back to B19</button>
+    <button class="btn ghost" style="margin-top:10px" onclick="shareB19()">Share B19 →</button>
+  </div>
+</section>
+
+<section id="admin" class="screen">
+  <div class="top"><button class="btn ghost small" onclick="show('home')">← Back</button><div class="eyebrow">Organizer</div></div>
+  <h2>Registrations</h2>
+  <div class="card">
+    <div class="stat"><span>Total registrations</span><strong id="total">0</strong></div>
+    <button class="btn small" style="margin-top:15px" onclick="exportCSV()">Export CSV</button>
+    <button class="btn ghost small" style="margin:10px 0 0 8px" onclick="clearData()">Clear</button>
+  </div>
+  <div id="list" class="card"></div>
+</section>
+
+<nav class="bottom">
+  <button class="nav active" data-target="home" onclick="show('home')"><b>⌂</b>Home</button>
+  <button class="nav" data-target="event" onclick="show('event')"><b>▣</b>Event</button>
+  <button class="nav" data-target="register" onclick="show('register')"><b>＋</b>RSVP</button>
+  <button class="nav" data-target="admin" onclick="show('admin')"><b>☷</b>Organizer</button>
+</nav>
+<div id="toast" class="toast"></div>
+</div>
+
+<script>
+// B19 Supabase connection
+const SUPABASE_URL = "https://uztsdpisyqtowmfartrl.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_pLbWUHpJucz6rVOqmiaC3Q_MARV1oym";
+const TABLE = "registrations";
+const $ = id => document.getElementById(id);
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.target===id));
+  if(id === "admin") updateAdmin();
+  scrollTo(0,0);
+}
+
+function headers(extra={}){
+  return {
+    "apikey": SUPABASE_PUBLISHABLE_KEY,
+    ...extra
+  };
+}
+
+async function submitRegistration(r){
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, {
+    method: "POST",
+    headers: headers({"Content-Type":"application/json", "Prefer":"return=minimal"}),
+    body: JSON.stringify(r)
+  });
+  if(!response.ok){
+    let detail = "";
+    try { detail = await response.text(); } catch(e) {}
+    const err = new Error(detail || `Supabase returned HTTP ${response.status}`);
+    err.status = response.status;
+    err.detail = detail;
+    throw err;
+  }
+}
+
+$("form").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const button = e.target.querySelector('button[type="submit"]');
+  const original = button.textContent;
+  button.disabled = true;
+  button.textContent = "Sending RSVP…";
+
+  const name = $("name").value.trim();
+  const phone = $("phone").value.trim();
+  const email = $("email").value.trim();
+  const attending = document.querySelector('input[name="attend"]:checked').value === "Yes";
+  const guests = Number($("guests").value) || 1;
+  const note = $("note").value.trim();
+
+  try{
+    await submitRegistration({
+      full_name: name,
+      phone: phone,
+      email: email || null,
+      guests: attending ? guests : 0,
+      message: note || null,
+      attending: attending,
+      note: note || null
+    });
+
+    $("successText").textContent = attending
+      ? `Thanks ${name}. Your place for B19 has been recorded.`
+      : `Thanks ${name}. Your response has been recorded.`;
+    e.target.reset();
+    show("success");
+  }catch(err){
+    console.error("B19 registration error:", err);
+    alert("Registration could not be submitted. Please check your connection and try again.");
+  }finally{
+    button.disabled = false;
+    button.textContent = original;
+  }
+});
+
+function updateAdmin(){
+  $("total").textContent = "Online";
+  $("list").innerHTML = '<p class="note">Registrations are now stored in the B19 Supabase database. For the full organizer list, open Supabase → Table Editor → registrations.</p>';
+}
+
+function exportCSV(){
+  alert("For security, organizer data is managed directly in Supabase. Open the registrations table and use Export to download a CSV.");
+}
+function clearData(){
+  alert("Online registrations are not deleted from this app. Use Supabase to manage or delete registrations securely.");
+}
+async function shareB19(){
+  const text="B19 Class of 2019 Get Together — 26 December 2026 at Zegans Hotel, Lira, from 10:00 AM onwards. Register and join us!";
+  if(navigator.share) await navigator.share({title:"B19 Get Together",text});
+  else {try{await navigator.clipboard.writeText(text);alert("B19 invitation copied.")}catch(e){alert(text)}}
+}
+</script>
+</body>
+</html>
